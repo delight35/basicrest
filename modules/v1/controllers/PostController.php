@@ -18,6 +18,7 @@ class PostController extends BaseApiController
     {
         $actions = parent::actions();
         $actions['index']['prepareDataProvider'] = [$this, 'dataIndex'];
+
         return $actions;
     }    
     
@@ -25,7 +26,7 @@ class PostController extends BaseApiController
     {
         $limitParam = Yii::$app->request->get('limit');
         // TODO : cityid and offset..
-        $offsetParam = Yii::$app->request->get('offset');
+        //$offsetParam = Yii::$app->request->get('offset');
         //$cityParam = Yii::$app->request->get('cityid');
         
         $validatorNumber = new NumberValidator();
@@ -34,25 +35,24 @@ class PostController extends BaseApiController
             $limitParam = Post::DEFAULT_LIMIT;
         } 
         
-        if (!$validatorNumber->validate($offsetParam) || $offsetParam == null) {
-            $offsetParam = Post::DEFAULT_OFFSET;
-        }
+        //if (!$validatorNumber->validate($offsetParam) || $offsetParam == null) {
+        //    $limitParam = Post::DEFAULT_LIMIT;
+        //}
         
         //$validatorString = new StringValidator();
         
         //if (!$validatorString->validate($cityParam) || $cityParam == null) {
         //    $cityParam = '';
-        //}       
-
-        $query = Post::find()
-                ->offset($offsetParam)
-                ->limit($limitParam);
+        //}        
         
         return Yii::createObject([
             'class' => ActiveDataProvider::class,
-            'query' => $query,
-            'pagination' => false
+            'query' => Post::find(),
+            'pagination' => [
+                'pageSize' => $limitParam,
+            ],            
         ]);
+              
     }
 }
 
