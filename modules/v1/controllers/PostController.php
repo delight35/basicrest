@@ -26,7 +26,7 @@ class PostController extends BaseApiController
     {
         $limitParam = Yii::$app->request->get('limit');
         // TODO : cityid and offset..
-        //$offsetParam = Yii::$app->request->get('offset');
+        $offsetParam = Yii::$app->request->get('offset');
         //$cityParam = Yii::$app->request->get('cityid');
         
         $validatorNumber = new NumberValidator();
@@ -35,24 +35,36 @@ class PostController extends BaseApiController
             $limitParam = Post::DEFAULT_LIMIT;
         } 
         
-        //if (!$validatorNumber->validate($offsetParam) || $offsetParam == null) {
-        //    $limitParam = Post::DEFAULT_LIMIT;
-        //}
+        if (!$validatorNumber->validate($offsetParam) || $offsetParam == null) {
+            $offsetParam = Post::DEFAULT_OFFSET;
+        }
         
         //$validatorString = new StringValidator();
         
         //if (!$validatorString->validate($cityParam) || $cityParam == null) {
         //    $cityParam = '';
-        //}        
+        //}       
+
+        $query = Post::find()->offset($offsetParam)->limit($limitParam);
         
         return Yii::createObject([
             'class' => ActiveDataProvider::class,
-            'query' => Post::find(),
-            'pagination' => [
-                'pageSize' => $limitParam,
-            ],            
+            'query' => $query,
+            'pagination' => false
         ]);
-              
+         
+        
+        /*
+        $query = News::find()->where(['show'=>1]);
+$query->andFIlterWhere([
+    'rubric' => $rubric,
+    'date' => $date,
+]);
+
+return new ActiveDataProvider([
+    'query' => $query,
+]);
+         */
     }
 }
 
