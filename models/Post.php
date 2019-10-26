@@ -127,4 +127,6 @@ class Post extends ActiveRecord
     {
         return $this->hasOne(User::className(), ['_id' => 'userId']);
     }
+
+    
 }

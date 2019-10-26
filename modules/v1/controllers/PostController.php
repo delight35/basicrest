@@ -18,7 +18,6 @@ class PostController extends BaseApiController
     {
         $actions = parent::actions();
         $actions['index']['prepareDataProvider'] = [$this, 'dataIndex'];
-
         return $actions;
     }    
     
@@ -45,26 +44,15 @@ class PostController extends BaseApiController
         //    $cityParam = '';
         //}       
 
-        $query = Post::find()->offset($offsetParam)->limit($limitParam);
+        $query = Post::find()
+                ->offset($offsetParam)
+                ->limit($limitParam);
         
         return Yii::createObject([
             'class' => ActiveDataProvider::class,
             'query' => $query,
             'pagination' => false
         ]);
-         
-        
-        /*
-        $query = News::find()->where(['show'=>1]);
-$query->andFIlterWhere([
-    'rubric' => $rubric,
-    'date' => $date,
-]);
-
-return new ActiveDataProvider([
-    'query' => $query,
-]);
-         */
     }
 }
 
