@@ -33,12 +33,8 @@ class PostResource extends Post
             'timePassed' => function (Post $model)
             {
                 $mongoObject = new \MongoDB\BSON\ObjectId($model->_id);
-                $mongoObjectDt = date("Y-m-d H:i:s", $mongoObject->getTimestamp());                
-                $mongoObjectDtCreate = \DateTime::createFromFormat("Y-m-d H:i:s", $mongoObjectDt);
-                $nowDt = new \DateTime();
-                $interval = $nowDt->diff($mongoObjectDtCreate);
-                $seconds = $interval->y*365*24*60*60+$interval->d*24*60*60+$interval->h*60*60+$interval->i*60+$interval->s;                                
-                return $seconds;
+                $seconds = time()-$mongoObject->getTimestamp();                                
+                return $seconds;           
             }
         ];
     }
